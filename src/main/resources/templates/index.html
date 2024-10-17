@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Reports</title>
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+
+	<div class="container mt-5">
+		<h1>Welcome to Reports App</h1>
+	</div>
+	<div class="container">
+		<form th:action="@{/filter-data}" method="POST"
+			th:object="${searchCriteria}">
+			<table class="table">
+				<thead>
+					<tr>
+						<th>Plan Name</th>
+						<th>Plan Status</th>
+						<th>Gender</th>
+						<th>Start Date</th>
+						<th>End Date</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td><select class="form-control" th:field="*{planNames}">
+								<option value="">--Select--</option>
+								<option th:each="name : ${planNames}" th:value="${name}"
+									th:text="${name}"></option>
+						</select></td>
+						<td><select class="form-control" th:field="*{planStatus}">
+								<option value="">--Select--</option>
+								<option th:each="status : ${planStatus}" th:value="${status}"
+									th:text="${status}"></option>
+						</select></td>
+						<td><select class="form-control" th:field="*{gender}">
+								<option value="">--Gender--</option>
+								<option value="Male">Male</option>
+								<option value="Female">Female</option>
+								<option value="Others">Others</option>
+						</select></td>
+						<td><input type="date" class="form-control"
+							th:field="*{planStartDate}" /></td>
+						<td><input type="date" class="form-control"
+							th:field="*{planEndDate}" /></td>
+						<td><input type="submit" class="btn btn-primary"
+							value="Search" /></td>
+					</tr>
+				</tbody>
+			</table>
+		</form>
+	</div>
+	<div class="container" mt-5>
+		<table class="table table-striped table-bordered">
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>Plan Name</th>
+					<th>Plan Status</th>
+					<th>Gender</th>
+					<th>SSN</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="report : ${citizenInfo}">
+					<td th:text="${report.name}"></td>
+					<td th:text="${report.planNames}"></td>
+					<td th:text="${report.planStatus}"></td>
+					<td th:text="${report.gender}"></td>
+					<td th:text="${report.ssn}"></td>
+				</tr>
+
+				<div th:if="${report == null or report.isEmpty()}">
+					<tr>
+						<td colspan="6" align="center" class="text-danger">No Records
+							Found</td>
+
+					</tr>
+				</div>
+			</tbody>
+		</table>
+	</div>
+	<div class="container mt-5 text-center">
+		<a th:href="@{/excel}" class="btn btn-primary" >Excel</a>
+		<a th:href="@{/pdf}" class="btn btn-danger" >PDF</a>
+	</div>
+</body>
+</html>
